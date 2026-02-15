@@ -1,0 +1,8 @@
+start
+declare Count = 100
+declare Price = 19.99
+declare Message = "Hello World"
+loop condition (Count > 0)
+    output Message
+    Count = Count - 1
+finish

@@ -1,0 +1,5 @@
+declare Result = (10 + 5) * 2 ** 3
+condition (Result >= 100 && true != false)
+    output Result / 2.5
+else
+    Result += 10

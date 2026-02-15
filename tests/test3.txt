@@ -1,0 +1,4 @@
+declare MyChar = '\n'
+declare Tab = '\t'
+declare Path = "C:\\Users\\Desktop"
+declare Quote = "He said, \"Hello!\""

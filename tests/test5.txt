@@ -1,0 +1,4 @@
+declare @Invalid = 10
+declare $Money = 500
+declare LongIdent = ABCdef123456789012345678901234567890
+declare BadFloat = 1.2.3
