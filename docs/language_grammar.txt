@@ -1,0 +1,152 @@
+================================================================================
+                        LANGUAGE GRAMMAR SPECIFICATION
+================================================================================
+
+1. TOKEN TYPES
+--------------------------------------------------------------------------------
+   KEYWORD, IDENTIFIER, INTEGER_LITERAL, FLOAT_LITERAL, STRING_LITERAL,
+   CHAR_LITERAL, BOOLEAN_LITERAL, OPERATOR, PUNCTUATOR, COMMENT, EOF, UNKNOWN
+
+
+2. KEYWORDS
+--------------------------------------------------------------------------------
+   start, finish, loop, condition, declare, output, input,
+   function, return, break, continue, else
+
+
+3. IDENTIFIERS
+--------------------------------------------------------------------------------
+   Regex:       [A-Z][a-z0-9]{0,30}
+   Rules:
+     - Must start with an uppercase letter [A-Z]
+     - Followed by lowercase letters or digits [a-z0-9]
+     - Maximum total length: 31 characters
+
+   Error Cases:
+     - Identifier exceeds 31 characters
+     - Identifier starts with lowercase letter
+     - Identifier starts with illegal character (@ or $)
+
+
+4. LITERALS
+--------------------------------------------------------------------------------
+
+   4.1 Integer Literals
+       Regex:   [+-]?[0-9]+
+
+   4.2 Floating-Point Literals
+       Regex:   [+-]?[0-9]+\.[0-9]{1,6}([eE][+-]?[0-9]+)?
+       Rules:
+         - Up to 6 decimal digits
+         - Optional scientific notation (e/E followed by optional sign and digits)
+
+       Error Cases:
+         - Malformed float (e.g., multiple decimal points)
+
+   4.3 String Literals
+       Regex:   "([^"\\\n]|\\["\\\ntr])*"
+       Rules:
+         - Enclosed in double quotes
+         - Supports escape sequences: \", \\, \n, \t, \r
+         - Cannot span multiple lines (no unescaped newlines)
+
+       Error Cases:
+         - Unterminated string literal (reaches end of line without closing ")
+
+   4.4 Character Literals
+       Regex:   '([^'\\\n]|\\[\\'\ntr])'
+       Rules:
+         - Enclosed in single quotes
+         - Single character or escape sequence
+
+   4.5 Boolean Literals
+       Values:  true, false
+
+
+5. OPERATORS
+--------------------------------------------------------------------------------
+
+   5.1 Multi-Character Operators
+       **    (exponentiation)
+       ==    (equality)
+       !=    (inequality)
+       <=    (less than or equal)
+       >=    (greater than or equal)
+       &&    (logical AND)
+       ||    (logical OR)
+       ++    (increment)
+       --    (decrement)
+       +=    (addition assignment)
+       -=    (subtraction assignment)
+       *=    (multiplication assignment)
+       /=    (division assignment)
+
+   5.2 Single-Character Operators
+       +     (addition)
+       -     (subtraction)
+       *     (multiplication)
+       /     (division)
+       %     (modulo)
+       =     (assignment)
+       <     (less than)
+       >     (greater than)
+       !     (logical NOT)
+
+
+6. PUNCTUATORS
+--------------------------------------------------------------------------------
+   (  )    Parentheses
+   {  }    Curly braces
+   [  ]    Square brackets
+   ,       Comma
+   ;       Semicolon
+   :       Colon
+
+
+7. COMMENTS
+--------------------------------------------------------------------------------
+
+   7.1 Single-Line Comments
+       Syntax:  ## comment text
+       Regex:   ##[^\n\r]*
+
+   7.2 Multi-Line Comments
+       Syntax:  #* comment text *#
+       Regex:   #\*([^*]|\*+[^#*])*\*+#
+
+       Error Cases:
+         - Unclosed multi-line comment (starts with #* but never closes)
+
+
+8. WHITESPACE
+--------------------------------------------------------------------------------
+   Regex:   [ \t\r\n]+
+   Rules:
+     - Whitespace is removed/skipped by the scanner
+     - Whitespace inside string literals is preserved
+
+
+9. PATTERN MATCHING PRIORITY
+--------------------------------------------------------------------------------
+   Tokens are matched using longest-match-first strategy.
+   When multiple patterns match the same length, priority order is:
+
+    1. Multi-line comments
+    2. Unclosed multi-line comment (error)
+    3. Single-line comments
+    4. Multi-character operators
+    5. Keywords
+    6. Boolean literals
+    7. Identifiers
+    8. Identifier errors (too long, invalid start)
+    9. Floating-point literals
+   10. Malformed float (error)
+   11. Integer literals
+   12. String literals
+   13. Unterminated string (error)
+   14. Character literals
+   15. Single-character operators
+   16. Punctuators
+   17. Whitespace
+
+================================================================================
