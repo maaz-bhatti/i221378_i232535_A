@@ -8,7 +8,7 @@
 ## 1. Team Members
 
 * **Member 1:** Muhammad Harris Azhar - 23i-2535
-* **Member 2:** Maaz Bin Usama - 22i-1578
+* **Member 2:** Maaz Bin Usama - 22i-1378
 
 ---
 
